@@ -56,7 +56,6 @@ export default function Home({ products, heroData, discoverData, packData }) {
 
   return (
     <>
-      <Layout>
         <main className="">
           <Hero heroData={heroData.length && heroData[0]} />
           <div className="px-[25px] mt-10">
@@ -111,7 +110,6 @@ export default function Home({ products, heroData, discoverData, packData }) {
           <Pack packData={packData.length && packData[0]} />
           <FooterBanner />
         </main>
-      </Layout>
     </>
   );
 }

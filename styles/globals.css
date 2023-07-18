@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  @apply w-11/12 m-auto;
+}
+
+
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.trial {
+  padding: 6px;
+}
+
+
+input[type='radio'] {
+  width: 20px;
+  height: 20px;
+  accent-color: #232323;
+}
+
+.blur-effect-theme {
+  @apply bg-white bg-clip-padding backdrop-filter backdrop-blur bg-opacity-50 opacity-60 z-[100] shadow-sm shadow-slate-100 transition-all duration-300;
+}
+
+.effect {
+  background-color: rgba(226,226,226,.5);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 50;
+}
+.insert-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sub-bg {
+  background-color: #efefef;
+}
+
+.e-container {
+  margin-top: 50px;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-box {
+  position: relative;
+  width: 200px;
+  height: 400px;
+  margin: 10px;
+  border-radius: 10px;
+  background: url('/cleanser 01.webp');
+  background-size: cover;
+  background-position: center;
+  transition:  0.5s;
+}
+
+.img-box:nth-child(2) {
+  background: url('/NIGHT OIL 04.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.img-box:nth-child(3) {
+  background: url('/hero.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.img-box:nth-child(4) {
+  background: url('/era.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.img-box:nth-child(5) {
+  background: url('/summer skin.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.img-box h3 {
+  position: absolute;
+  top: 50%;
+  left: -50%;
+  color: #fff;
+  font-weight: bolder;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: left 0.5s;
+}
+
+.img-box:hover {
+  width: 500px;
+  cursor: pointer;
+}
+
+.img-box:hover h3 {
+  opacity: 1;
+  left: 50%;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in.fade-in-active {
+  opacity: 1;
+}
+
+.bundle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.contruction-btn {
+  background: linear-gradient(135deg, #FF512F, #DD2476);
+}

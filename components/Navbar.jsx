@@ -9,8 +9,7 @@ import { useStateContext } from "@/context/StateContext";
 import Cart from "./Cart";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { BiSolidUserCircle } from "react-icons/bi"
-import { FaCircleUser } from "react-icons/fa"
+import { FaUserCircle } from "react-icons/fa"
 import { signIn, useSession } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -121,7 +120,7 @@ const Navbar = ({ products }) => {
               </div>
             )}
             <button type="button" onClick={() => signIn("google")}>
-              <FaCircleUser className="w-7 h-7 text-black cursor-pointer" />
+              <FaUserCircle className="w-7 h-7 text-black cursor-pointer" />
             </button>
             <button type="button" className="relative">
               <HiOutlineShoppingBag

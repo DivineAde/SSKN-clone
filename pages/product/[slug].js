@@ -1,12 +1,10 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import { urlFor, client } from "@/lib/client";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import Rituals from "@/components/Rituals";
-import {Accordion, AccordionBody, AccordionHeader, AccordionItem} from "react-headless-accordion";
-
-
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "react-headless-accordion";
 
 // Import Swiper styles
 import "swiper/css";
@@ -15,13 +13,14 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { AiFillStar, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useStateContext } from "@/context/StateContext";
+import Link from "next/link";
 
-
-const TopRatedProduct = ({ products, product, discoverData }) => {
-
-  const  { decQty, incQty, qty, onAdd } = useStateContext();
+const TopRatedProduct = ({ product, discoverData }) => {
+  const { decQty, incQty, qty, onAdd } = useStateContext();
   const [index, setIndex] = useState(0);
-  const [num, setNum] = useState(0);
+
+  // Default to a fallback if products aren't fetched properly during dev
+  if (!product) return <div>Product Not Found</div>;
 
   const {
     image,
@@ -35,424 +34,322 @@ const TopRatedProduct = ({ products, product, discoverData }) => {
     application,
     results,
   } = product;
+
   return (
     <>
-      <div className="mt-32">
-        <h1 className="px-[25px] text-lg uppercase"><span className="opacity-50">Home</span>  /  {`${slug.current}`}</h1>
-        <div className="mt-24 px-[25px] flex flex-col lg:flex-row gap-x-4 w-full">
-          <div className="flex gap-x-4 w-full lg:w-3/5">
-           <div className="hidden lg:block">
-            {image?.map((item, i) => (
-              <div className="cursor-pointer" key={item._id} >
-                <img src={urlFor(item)} key={item._id} className={i === index ? "border border-black max-w-[6rem] mb-4" : "max-w-[6rem] mb-4"} onClick={() => setIndex(i)} />
-              </div>
-            ))}
-           </div>
-           <div className="w-full">
-            <img src={urlFor(image && image[index])} className="hidden w-full  lg:block" alt="" />
-           </div>
-          </div>
-          <div className="w-full lg:w-2/5">
-            <h1 className="text-2xl lg:text-3xl font-medium uppercase">{name}</h1>
-            <h1 className="text-2xl lg:text-3xl font-medium uppercase">{size}</h1>
-            <p className="text-2xl font-bold">&#36;{price}</p>
-            <div className="flex flex-row items-center gap-x-4">
-              <span className="flex">
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-              </span>
-              <p>4.5 (200)</p>
-            </div>
-            <div className="flex items-center lg:hidden">
-                <Swiper
-                  modules={[Navigation, Pagination, Scrollbar, A11y]}
-                  spaceBetween={50}
-                  slidesPerView={1}
-                  navigation
-                  pagination={{ clickable: true }}
-                  scrollbar={{ draggable: true }}
-                  onSwiper={(swiper) => console.log(swiper)}
-                  onSlideChange={() => console.log("slide change")}
+      <Head>
+        <title>{name} – SKKN BY KIM</title>
+      </Head>
+
+      <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff" }}>
+        {/* ── BREADCRUMBS ── */}
+        <div style={{ padding: "32px 40px", maxWidth: 1440, margin: "0 auto" }}>
+          <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a" }}>
+            <Link href="/" style={{ opacity: 0.5, cursor: "pointer", marginRight: 8, textDecoration: "none", color: "inherit" }}>
+              Home
+            </Link>
+            <span style={{ opacity: 0.5, marginRight: 8 }}>/</span>
+            {name}
+          </h1>
+        </div>
+
+        {/* ── MAIN PRODUCT GRID ── */}
+        <main
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 480px",
+            gap: 48,
+            maxWidth: 1440,
+            margin: "0 auto",
+            padding: "0 40px 80px",
+          }}
+          className="product-page-main"
+        >
+          {/* LEFT: Imagery */}
+          <div style={{ display: "flex", gap: 24, position: "relative" }}>
+            {/* Thumbnails (Desktop) */}
+            <div style={{ width: 80, display: "flex", flexDirection: "column", gap: 16 }} className="hidden lg:flex">
+              {image?.map((item, i) => (
+                <div
+                  key={item._id}
+                  onClick={() => setIndex(i)}
+                  style={{
+                    width: 80,
+                    height: 100,
+                    background: "#f9f6f2",
+                    cursor: "pointer",
+                    border: i === index ? "1px solid #0a0a0a" : "1px solid transparent",
+                    opacity: i === index ? 1 : 0.6,
+                    transition: "all 0.2s ease",
+                  }}
                 >
-                  {image?.map((item, i) => (
-                    <SwiperSlide key={item._id}>
-                      <img
-                        src={urlFor(item)}
-                        className="cursor-pointer w-full"
-                        onClick={() => setIndex(i)}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                  <img src={urlFor(item)} alt={`Thumbnail ${i}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+              ))}
             </div>
 
-            <div>
-              <span className="text-sm">Type</span>
-              <div className=" flex gap-x-4 mt-6">
+            {/* Main Image (Desktop) */}
+            <div style={{ flex: 1, background: "#f9f6f2", position: "relative", minHeight: 600 }} className="hidden lg:block">
+              {image && (
+                <img
+                  src={urlFor(image[index])}
+                  alt={name}
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", animation: "fadeIn 0.3s ease" }}
+                  key={index}
+                />
+              )}
+            </div>
+
+            {/* Mobile Carousel */}
+            <div className="block lg:hidden" style={{ width: "100%", background: "#f9f6f2" }}>
+              <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                spaceBetween={0}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                style={{ width: "100%", height: "auto", aspectRatio: "3/4" }}
+              >
+                {image?.map((item) => (
+                  <SwiperSlide key={item._id}>
+                    <img src={urlFor(item)} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+
+          {/* RIGHT: Product Info */}
+          <div style={{ position: "sticky", top: "calc(var(--nav-h, 80px) + 32px)", alignSelf: "start" }}>
+            <span className="section-label">Skincare</span>
+            <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2rem, 3vw, 2.8rem)", fontWeight: 400, letterSpacing: "-0.02em", marginBottom: 8 }}>
+              {name}
+            </h1>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
+              <p style={{ fontSize: "1.2rem", fontWeight: 700 }}>${price}</p>
+              <p style={{ fontSize: "0.8rem", color: "#888" }}>{size}</p>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 32 }}>
+              <div style={{ display: "flex", gap: 2 }}>
+                {[...Array(5)].map((_, i) => (
+                  <AiFillStar key={i} style={{ width: 14, height: 14, color: i < 4.5 ? "#0a0a0a" : "#ccc" }} />
+                ))}
+              </div>
+              <span style={{ fontSize: "0.75rem", color: "#666", fontWeight: 500 }}>(200 Reviews)</span>
+            </div>
+
+            <p style={{ fontSize: "0.85rem", color: "#555", lineHeight: 1.7, marginBottom: 32 }}>
+              {details || "A gentle yet efficient peptide eye cream that helps support skin's natural elasticity and acts to reduce puffiness and the appearance of fine lines."}
+            </p>
+
+            {/* Type Selector */}
+            <div style={{ marginBottom: 24 }}>
+              <span style={{ display: "block", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
+                Format
+              </span>
+              <div style={{ display: "flex", gap: 10 }}>
                 <button
-                  type="button"
-                  className="py-2 px-4 rounded-full border border-black bg-black text-white uppercase text-sm"
+                  style={{ flex: 1, height: 44, border: "1px solid #0a0a0a", background: "#0a0a0a", color: "#fff", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}
                 >
                   Single
                 </button>
                 <button
-                  type="button"
-                  className="py-2 px-4 border border-black rounded-full bg-white text-black uppercase text-sm"
+                  style={{ flex: 1, height: 44, border: "1px solid #e8e4df", background: "#fff", color: "#0a0a0a", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", transition: "border-color 0.2s ease" }}
+                  onMouseEnter={(e) => e.currentTarget.style.borderColor = "#0a0a0a"}
+                  onMouseLeave={(e) => e.currentTarget.style.borderColor = "#e8e4df"}
                 >
                   Refill
                 </button>
               </div>
-              <form className="flex flex-col mt-6">
-                <label className="font-medium flex items-center">
-                  <input type="radio" name="radio" className="mr-2" />
-                  One-time purchase
-                </label>
-                <label className="font-medium flex items-center">
-                  <input type="radio" name="radio" className="mr-2" />
-                  Subscribe & save 10%
-                </label>
-              </form>
-              <div className="pt-6">
-                <span>QUANTITY</span>
-                <div className="flex gap-x-2">
-                  <div className="flex flex-row items-center border border-black">
-                    <button
-                      type="button"
-                      className="p-2 hover:bg-slate-200 hover:rounded-full"
-                      onClick={decQty}
-                    >
-                      <AiOutlineMinus />
-                    </button>
-                    <span className="p-2">{qty}</span>
-                    <button
-                      type="button"
-                      className="p-2 hover:bg-slate-200 hover:rounded-full"
-                      onClick={incQty}
-                    >
-                      <AiOutlinePlus />
-                    </button>
+            </div>
+
+            {/* Subscription */}
+            <div style={{ padding: 16, border: "1px solid #e8e4df", marginBottom: 32, background: "#f9f6f2" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", marginBottom: 12 }}>
+                <input type="radio" name="subs" defaultChecked style={{ width: 16, height: 16, accentColor: "#0a0a0a" }} />
+                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>One-time purchase (${price})</span>
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+                <input type="radio" name="subs" style={{ width: 16, height: 16, accentColor: "#0a0a0a" }} />
+                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>Subscribe &amp; Save 10% (${(price * 0.9).toFixed(2)})</span>
+              </label>
+            </div>
+
+            {/* Add to Bag Row */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", border: "1px solid #0a0a0a", height: 52 }}>
+                <button
+                  type="button"
+                  onClick={decQty}
+                  style={{ width: 44, height: "100%", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "#f0ede8"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "none"}
+                >
+                  <AiOutlineMinus style={{ width: 14, height: 14 }} />
+                </button>
+                <span style={{ width: 32, textAlign: "center", fontSize: "0.9rem", fontWeight: 600 }}>{qty}</span>
+                <button
+                  type="button"
+                  onClick={incQty}
+                  style={{ width: 44, height: "100%", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "#f0ede8"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "none"}
+                >
+                  <AiOutlinePlus style={{ width: 14, height: 14 }} />
+                </button>
+              </div>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => onAdd(product, qty)}
+                style={{ flex: 1, height: 52, fontSize: "0.75rem" }}
+              >
+                Add To Bag — ${(price * qty).toFixed(2)}
+              </button>
+            </div>
+
+            <p style={{ fontSize: "0.65rem", color: "#888", textAlign: "center", letterSpacing: "0.02em", marginBottom: 40 }}>
+              Or 4 interest-free payments of ${(price / 4).toFixed(2)} with <strong>Klarna</strong>
+            </p>
+
+            {/* Accordions */}
+            <div style={{ borderTop: "1px solid #e8e4df" }}>
+              <Accordion transition={{ duration: "300ms", timingFunction: "ease" }}>
+                {[
+                  { title: "Product Details", content: details },
+                  { title: "All Ingredients", content: ingredients },
+                  { title: "Application", content: application },
+                  { title: "Key Ingredients", content: components },
+                  { title: "Results", content: results },
+                ].map((acc, i) => (
+                  <div key={i} style={{ borderBottom: "1px solid #e8e4df" }}>
+                    <AccordionItem>
+                      {({ open }) => (
+                        <>
+                          <AccordionHeader
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              padding: "20px 0",
+                              cursor: "pointer",
+                              background: "none",
+                              border: "none",
+                            }}
+                          >
+                            <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                              {acc.title}
+                            </span>
+                            {open ? <AiOutlineMinus style={{ color: "#888" }} /> : <AiOutlinePlus style={{ color: "#888" }} />}
+                          </AccordionHeader>
+                          <AccordionBody>
+                            <div style={{ paddingBottom: 20, fontSize: "0.8rem", color: "#555", lineHeight: 1.6 }}>
+                              {acc.content || "Information temporarily unavailable."}
+                            </div>
+                          </AccordionBody>
+                        </>
+                      )}
+                    </AccordionItem>
                   </div>
-                  <button
-                    type="button"
-                    className="py-2 w-full border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out" onClick={() => onAdd(product, qty)}>
-                    ADD TO BAG - {`${price}`}
-                  </button>
-                </div>
-                <p className="text-sm pt-2">
-                  or 4 interest-free payments of $18.75 with{" "}
-                  <span className="font-bold text-lg">afterpay</span>
-                </p>
-                <p className="text-sm pt-4">
-                  A gentle yet efficient peptide eye cream that helps support
-                  skin's natural elasticity and acts to reduce puffiness and the
-                  appearance of fine lines around the eye's most delicate areas.
-                  <br />
-                  Recommended replenishment frequency: 1 month{" "}
-                </p>
-              </div>
-            </div>
-
-            {/*}
-            <div className="pt-16">
-            <div className="border border-gray-400 border-x-0 py-4 mb-4">
-              <div
-                className="flex items-center justify-between"
-                onClick={toggleAccordionOne}
-              >
-                <h2 className="text-[.9rem]">Product detials</h2>
-                {isExpandedOne ? <AiOutlineMinus /> : <AiOutlinePlus />}
-              </div>
-              {isExpandedOne && (
-                <div className="">
-                  <p className="text-[.8rem]">{details}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="border border-gray-400 border-x-0 mb-4 py-4">
-              <div
-                className="flex items-center justify-between"
-                onClick={toggleAccordionTwo}
-              >
-                <h2 className="text-[.9rem]">All ingredients</h2>
-                {isExpandedTwo ? <AiOutlineMinus /> : <AiOutlinePlus />}
-              </div>
-              {isExpandedTwo && (
-                <div className="">
-                  <p className="text-[.8rem]">{ingredients}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="border border-gray-400 border-x-0 mb-4 py-4">
-              <div
-                className="flex items-center justify-between"
-                onClick={toggleAccordionThree}
-              >
-                <h2 className="text-[.9rem]">Application</h2>
-                {isExpandedThree ? <AiOutlineMinus /> : <AiOutlinePlus />}
-              </div>
-              {isExpandedThree && (
-                <div className="">
-                  <p className="text-[.8rem]">{application}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="border border-gray-400 border-x-0  mb-4 py-4">
-              <div
-                className="flex items-center justify-between"
-                onClick={toggleAccordionFour}
-              >
-                <h2 className="text-[.9rem]">Key Ingredients</h2>
-                {isExpandedFour ? <AiOutlineMinus /> : <AiOutlinePlus />}
-              </div>
-              {isExpandedFour && (
-                <div className="">
-                  <p className="text-[.8rem]">{components}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="border border-gray-400 border-x-0  mb-4 py-4">
-              <div
-                className="flex items-center justify-between"
-                onClick={toggleAccordionFive}
-              >
-                <h2 className="text-[.9rem]">Results</h2>
-                {isExpandedFive ? <AiOutlineMinus /> : <AiOutlinePlus />}
-              </div>
-              {isExpandedFive && (
-                <div className="">
-                  <p className="text-[.8rem]">{results}</p>
-                </div>
-              )}
-            </div>
-              </div>*/}
-            
-            <div className="mt-6">
-            <Accordion
-              transition={{
-                duration: "300ms",
-                timingFunction: "cubic-bezier(0, 0, 0.2, 1)",
-              }}
-            >
-              <div className="border-t border-gray-400 py-2">
-                <AccordionItem className="">
-                  {({ open }) => (
-                    <>
-                      <AccordionHeader className="w-full flex justify-between items-center">
-                        <h2 className="uppercase ">
-                          PRODUCT DETAILS
-                        </h2>
-                        <AiOutlinePlus
-                          className={` ${!open ? "block" : "hidden"}`}
-                        />
-                        <AiOutlineMinus
-                          className={`${!open ? "hidden" : "block"}`}
-                        />
-                      </AccordionHeader>
-
-                      <AccordionBody>
-                        <div className="pt-4">
-                          {details}
-                        </div>
-                      </AccordionBody>
-                    </>
-                  )}
-                </AccordionItem>
-              </div>
-
-              <div className="border-t border-gray-400 py-2">
-                <AccordionItem className="">
-                  {({ open }) => (
-                    <>
-                      <AccordionHeader className="w-full flex justify-between items-center">
-                        <h2 className="uppercase ">
-                          ALL INGREDIENTS
-                        </h2>
-                        <AiOutlinePlus
-                          className={` ${!open ? "block" : "hidden"}`}
-                        />
-                        <AiOutlineMinus
-                          className={`${!open ? "hidden" : "block"}`}
-                        />
-                      </AccordionHeader>
-
-                      <AccordionBody>
-                        <div className="pt-4">
-                          {ingredients}
-                        </div>
-                      </AccordionBody>
-                    </>
-                  )}
-                </AccordionItem>
-              </div>
-
-              <div className="border-t border-gray-400 py-2">
-                <AccordionItem className="">
-                  {({ open }) => (
-                    <>
-                      <AccordionHeader className="w-full flex justify-between items-center">
-                        <h2 className="uppercase ">APPLICATION</h2>
-                        <AiOutlinePlus
-                          className={` ${!open ? "block" : "hidden"}`}
-                        />
-                        <AiOutlineMinus
-                          className={`${!open ? "hidden" : "block"}`}
-                        />
-                      </AccordionHeader>
-
-                      <AccordionBody>
-                        <div className="pt-4">
-                          {application}
-                        </div>
-                      </AccordionBody>
-                    </>
-                  )}
-                </AccordionItem>
-              </div>
-
-              <div className="border-t border-gray-400 py-2">
-                <AccordionItem className="">
-                  {({ open }) => (
-                    <>
-                      <AccordionHeader className="w-full flex justify-between items-center">
-                        <h2 className="uppercase ">
-                          KEY INGREDIENTS
-                        </h2>
-                        <AiOutlinePlus
-                          className={` ${!open ? "block" : "hidden"}`}
-                        />
-                        <AiOutlineMinus
-                          className={`${!open ? "hidden" : "block"}`}
-                        />
-                      </AccordionHeader>
-
-                      <AccordionBody>
-                        <div className="pt-4">
-                          {components}
-                        </div>
-                      </AccordionBody>
-                    </>
-                  )}
-                </AccordionItem>
-              </div>
-
-              <div className="border-y border-gray-400 py-2">
-                <AccordionItem className="">
-                  {({ open }) => (
-                    <>
-                      <AccordionHeader className="w-full flex justify-between items-center">
-                        <h2 className="uppercase ">
-                         RESULTS
-                        </h2>
-                        <AiOutlinePlus
-                          className={` ${!open ? "block" : "hidden"}`}
-                        />
-                        <AiOutlineMinus
-                          className={`${!open ? "hidden" : "block"}`}
-                        />
-                      </AccordionHeader>
-
-                      <AccordionBody>
-                        <div className="pt-4">
-                          {results}
-                        </div>
-                      </AccordionBody>
-                    </>
-                  )}
-                </AccordionItem>
-              </div>
-            </Accordion>
+                ))}
+              </Accordion>
             </div>
           </div>
+        </main>
 
-          {/*<div className="w-full">
-           <img src={urlFor(image && image[index])} className="w-full" alt="" />
-            </div>*/}
-        </div>
-
-        {/* RITUAL COMPONENTS */}
-        <div className="px-[25px] w-full flex flex-col gap-x-8 lg:flex-row mt-24 mb-12">
-          <div className="w-full lg:w-3/5">
-            <img src="/watch now.webp" alt="watch_now/img" />
+        {/* ── RELATED RITUALS ── */}
+        <section style={{ borderTop: "1px solid #e8e4df", padding: "80px 40px", maxWidth: 1440, margin: "0 auto", display: "flex", gap: 48 }} className="flex-col lg:flex-row">
+          <div style={{ flex: "0 0 55%", background: "#f9f6f2", overflow: "hidden" }}>
+            <img src="/watch now.webp" alt="Rituals" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
-
-          <div className="w-full lg:w-2/5">
-            <h1 className="text-2xl uppercase font-bold">Discover your rituals</h1>
-            <div className="mt-8 overflow-auto lg:max-h-[40vh]">
-              {discoverData.map((item) => (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <span className="section-label">Complete The Ritual</span>
+            <h2 className="section-heading" style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", marginBottom: 24 }}>
+              Discover Your Ritual
+            </h2>
+            <div style={{ maxHeight: "40vh", overflowY: "auto", paddingRight: 8 }}>
+              {discoverData?.map((item) => (
                 <Rituals key={item._id} item={item} />
               ))}
             </div>
-            <button className="w-full py-4 border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out mt-[10%]">SHOP ALL</button>
+            <Link href="/collections/shop-all">
+              <button className="btn-primary" style={{ marginTop: 32, width: "100%", height: 52, justifyContent: "center", fontSize: "0.7rem" }}>
+                Shop All Products
+              </button>
+            </Link>
           </div>
-        </div>
+        </section>
 
-        {/*  CONSUMER RESULT */}
-        <div className="relative">
-          <img src="/CONSUMER RESULT.webp" className="hidden md:block" />
-          <img src="/CONSUMER RESULT SMALL.webp" className="block md:hidden" />
-          <div className="absolute top-[40%] md:top-[60%] left-[5%]">
-            <h2 className="text-[2em] text-white font-bold">CONSUMER RESULTS</h2>
-            <p className="text-white md:text-[1.1em] pb-2">100% agree this product helps restore the elasticity of the skin around the eyes</p>
-            <p className="text-white md:text-[1.1em] pb-2">100% agree this product visibly firmed and smoothed their eye area</p>
-            <p className="text-white md:text-[1.1em]">100% agree this product minimized undereye puffiness over time</p>
-            <p></p>
+        {/* ── CONSUMER RESULTS BANNER ── */}
+        <section style={{ position: "relative" }}>
+          <img src="/CONSUMER RESULT.webp" alt="Results" style={{ width: "100%", objectFit: "cover", display: "block" }} className="hidden md:block" />
+          <img src="/CONSUMER RESULT SMALL.webp" alt="Results" style={{ width: "100%", objectFit: "cover", display: "block" }} className="block md:hidden" />
+          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.3)" }} />
+          <div style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", left: "6%", maxWidth: 500 }}>
+            <span className="section-label" style={{ color: "rgba(255,255,255,0.8)" }}>Proven Efficacy</span>
+            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#fff", marginBottom: 24, letterSpacing: "-0.01em" }}>
+              Consumer Results
+            </h2>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 16 }}>
+              {["100% agree this product helps restore the elasticity of the skin", "100% agree this product visibly firmed and smoothed their area", "100% agree this product minimized puffiness over time"].map((res, i) => (
+                <li key={i} style={{ display: "flex", gap: 12, color: "#fff", alignItems: "flex-start", fontSize: "0.85rem", lineHeight: 1.6 }}>
+                  <span style={{ fontSize: "1rem", lineHeight: 1 }}>✦</span>
+                  {res}
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </section>
 
-        {/* SUBSCRIBTION */}
-        <div className="w-full px-[25px] flex flex-col-reverse md:flex-row pt-16 gap-x-8">
-          <div className="w-full md:w-1/2">
-            <h2 className="text-2xl pt-2 md:pt-0 pb-4 uppercase">Subscription</h2>
-            <p>Indulge in the convenience and exclusive benefits offered with our subscription service. Simply select how frequently you'd like to recieve your products, and we'll ensure you never run on empty. You may adjust your delivery preferences at any time.</p>
-            <button type="button" className="py-2 px-4 uppercase border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out mt-4">Learn more</button>
+        {/* ── SUBSCRIPTION SECTION ── */}
+        <section style={{ display: "flex", flexWrap: "wrap", borderTop: "1px solid #e8e4df" }} className="flex-col-reverse md:flex-row">
+          <div style={{ flex: 1, padding: "80px 60px", display: "flex", flexDirection: "column", justifyContent: "center", minWidth: 320 }}>
+            <span className="section-label">Replenish</span>
+            <h2 className="section-heading" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", marginBottom: 20 }}>
+              Subscription
+            </h2>
+            <p style={{ fontSize: "0.85rem", color: "#555", lineHeight: 1.8, marginBottom: 32, maxWidth: 440 }}>
+              Indulge in the convenience and exclusive benefits offered with our subscription service. Simply select how frequently you'd like to receive your products, and we'll ensure you never run on empty.
+            </p>
+            <div>
+              <button className="btn-secondary">Learn More</button>
+            </div>
           </div>
+          <div style={{ flex: 1, minWidth: 320, background: "#f9f6f2", overflow: "hidden" }}>
+            <img src="/subscribtion.webp" alt="Subscription" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          </div>
+        </section>
 
-          <div className="w-full md:w-1/2">
-            <img src="/subscribtion.webp" alt="subscription_img" className="" />
-          </div>
-        </div>
       </div>
+
+      {/* Internal component styles */}
+      <style>{`
+        @media (max-width: 1024px) {
+          .product-page-main { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </>
   );
 };
 
 export const getStaticPaths = async () => {
-  const query = `*[_type == "product"] {
-    slug {
-      current
-    }
-  }`;
-
+  const query = `*[_type == "product"] { slug { current } }`;
   const products = await client.fetch(query);
-
   const paths = products.map((product) => ({
-    params: {
-      slug: product.slug.current,
-    },
+    params: { slug: product.slug.current },
   }));
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
+  return { paths, fallback: "blocking" };
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = '*[_type == "product"]';
   const discoverData = await client.fetch(`*[_type == "rituals"]`);
-
   const product = await client.fetch(query);
-  const products = await client.fetch(productsQuery);
 
   return {
-    props: { products, product, discoverData },
+    props: { product, discoverData },
   };
 };
 

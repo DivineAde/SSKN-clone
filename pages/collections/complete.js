@@ -1,38 +1,43 @@
 import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 import { client } from "@/lib/client";
-import AllSet from "@/components/Complete";
+import Everything from "@/components/Everything";
 
-const Set = ({ discoverData, setData }) => {
+const Complete = ({ products }) => {
   return (
-    <div>
-      <AllSet
-        setData={setData.length && setData[0]}
-        discoverData={discoverData.length}
-      />
-    </div>
+    <>
+      <Head>
+        <title>Complete Collection – SKKN BY KIM</title>
+      </Head>
+      <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff", minHeight: "100vh" }}>
+        <div style={{ padding: "40px 40px 80px", maxWidth: 1440, margin: "0 auto" }}>
+          
+          <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 32 }}>
+            <Link href="/" style={{ opacity: 0.5, marginRight: 8, textDecoration: "none", color: "inherit" }}>Home</Link>
+            <span style={{ opacity: 0.5, marginRight: 8 }}>/</span>
+            Complete Collection
+          </h1>
+          
+          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.02em", marginBottom: 48 }}>
+            Complete Collection
+          </h2>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "60px 32px" }}>
+            {products?.map((product) => (
+              <Everything key={product._id} product={product} />
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </>
   );
 };
 
 export async function getStaticProps() {
   const products = await client.fetch(`*[_type == "product"]`);
-
-  const heroData = await client.fetch(`*[_type == "hero"]`);
-
-  const discoverData = await client.fetch(`*[_type == "rituals"]`);
-
-  const packData = await client.fetch(`*[_type == "pack"]`);
-
-  const setData = await client.fetch(`*[_type == "set"]`);
-
-  return {
-    props: {
-      products,
-      heroData,
-      discoverData,
-      packData,
-      setData,
-    },
-  };
+  return { props: { products } };
 }
 
-export default Set;
+export default Complete;

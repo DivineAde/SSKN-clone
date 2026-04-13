@@ -1,38 +1,43 @@
 import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 import { client } from "@/lib/client";
 import Everything from "@/components/Everything";
 
-const ShopAll = ({ products, heroData, discoverData, packData }) => {
+const ShopAll = ({ products }) => {
   return (
-    <div className=" mt-52 px-4">
-      <h3>Home   /   <span className="uppercase">shop all</span></h3>
-      <h1 className="uppercase text-2xl mt-6 mb-14">Shop all</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-        {products.map((product) => (
-          <Everything key={product._id} product={product} className="" />
-        ))}
+    <>
+      <Head>
+        <title>Shop All – SKKN BY KIM</title>
+      </Head>
+      <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff", minHeight: "100vh" }}>
+        <div style={{ padding: "40px 40px 80px", maxWidth: 1440, margin: "0 auto" }}>
+          
+          <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 32 }}>
+            <Link href="/" style={{ opacity: 0.5, marginRight: 8, textDecoration: "none", color: "inherit" }}>Home</Link>
+            <span style={{ opacity: 0.5, marginRight: 8 }}>/</span>
+            Shop All
+          </h1>
+          
+          <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.02em", marginBottom: 48 }}>
+            Shop All
+          </h2>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "60px 32px" }}>
+            {products?.map((product) => (
+              <Everything key={product._id} product={product} />
+            ))}
+          </div>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export async function getStaticProps() {
   const products = await client.fetch(`*[_type == "product"]`);
-
-  const heroData = await client.fetch(`*[_type == "hero"]`);
-
-  const discoverData = await client.fetch(`*[_type == "rituals"]`);
-
-  const packData = await client.fetch(`*[_type == "pack"]`);
-
-  return {
-    props: {
-      products,
-      heroData,
-      discoverData,
-      packData,
-    },
-  };
+  return { props: { products } };
 }
 
 export default ShopAll;

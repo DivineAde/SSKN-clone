@@ -1,99 +1,120 @@
 import React, { useState } from "react";
-import { AiFillStar, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { BsStarHalf } from "react-icons/bs";
+import { AiFillStar } from "react-icons/ai";
 import { urlFor } from "@/lib/client";
 import { useStateContext } from "@/context/StateContext";
+import Link from "next/link";
+import { HiOutlineShoppingBag } from "react-icons/hi";
 
-const Everything = ({ product: { image, name, slug, price }, product }) => {
-  const {
-    qty,
-    totalQuantities,
-    incQty,
-    decQty,
-    toggleCartItemQuantity,
-    onAdd,
-    shopAllItems,
-  } = useStateContext();
-  const [hover, setHover] = useState(false);
+const Everything = ({ product }) => {
+  const { onAdd } = useStateContext();
+  const [hovered, setHovered] = useState(false);
+  const { image, name, slug, price } = product;
 
   return (
-    <>
-      <div className="grid items-center gap-4 pb-2 rounded-lg ">
-        <div className="flex flex-col">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Image Container with hover swap */}
+      <div
+        style={{
+          aspectRatio: "3/4",
+          background: "#f9f6f2",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Link href={`/product/${slug.current}`} style={{ display: "block", width: "100%", height: "100%" }}>
           <img
             src={urlFor(image && image[0])}
-            alt="acid"
-            className="w-full h-full"
+            alt={name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              position: "absolute",
+              inset: 0,
+              opacity: hovered && image[1] ? 0 : 1,
+              transition: "opacity 0.4s ease, transform 0.8s ease",
+              transform: hovered ? "scale(1.03)" : "scale(1)",
+            }}
           />
-          <div>
-            <div className="flex justify-between items-center">
-              <h1 className="text-[19px] uppercase ">{name}</h1>
-              <p className="text-2xl font-medium">&#36;{price}</p>
-            </div>
-            <div className="flex">
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <BsStarHalf />
-            </div>
-          </div>
-          <div className="flex flex-row gap-x-2 mt-[3em] mb-7">
-            <button
-              type="button"
-              className="uppercase border border-black rounded-full px-4 py-2 bg-black text-white"
-            >
-              Single
-            </button>
-            <button
-              type="button"
-              className="uppercase border border-slate-200 rounded-full px-4 py-2 bg-slate-200"
-            >
-              REFILL
-            </button>
-          </div>
-          <div className="flex items-center gap-x-2">
-            <div className="border border-black py-2 px-2 hidden">
-              <button
-                className="mr-2 hover:bg-slate-300 rounded-full p-1"
-                onClick={() => shopAllItems(product._id, "add")}
-              >
-                <AiOutlinePlus />
-              </button>
-              <span>{product.quantity}</span>
-              {console.log()}
-              <button
-                className="ml-2 hover:bg-slate-400 rounded-full p-1"
-                onClick={() => shopAllItems(product._id, "remove")}
-              >
-                <AiOutlineMinus />
-              </button>
-            </div>
-            <button
-              type="button"
-              className="py-2 border border-black bg-white text-black hover:bg-black hover:text-white transition duration-300 ease-in-out w-full uppercase"
-              onClick={() => onAdd(product, qty)}
-            >
-              Add to bag
-            </button>
-          </div>
-        </div>
+          {image && image[1] && (
+            <img
+              src={urlFor(image[1])}
+              alt={name}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                inset: 0,
+                opacity: hovered ? 1 : 0,
+                transition: "opacity 0.4s ease, transform 0.8s ease",
+                transform: hovered ? "scale(1.03)" : "scale(1)",
+              }}
+            />
+          )}
+        </Link>
       </div>
-    </>
+
+      {/* Info Container */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+          <Link href={`/product/${slug.current}`} style={{ textDecoration: "none", color: "inherit", minWidth: 0 }}>
+            <h3
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                lineHeight: 1.2,
+                cursor: "pointer",
+              }}
+            >
+              {name}
+            </h3>
+          </Link>
+          <span style={{ fontSize: "0.85rem", fontWeight: 700, flexShrink: 0 }}>
+            ${price}
+          </span>
+        </div>
+
+        <div style={{ display: "flex", gap: 2 }}>
+          {[...Array(5)].map((_, i) => (
+            <AiFillStar key={i} style={{ width: 12, height: 12, color: i < 4.5 ? "#0a0a0a" : "#ccc" }} />
+          ))}
+        </div>
+
+        <button
+          onClick={() => onAdd(product, 1)}
+          className="btn-secondary"
+          style={{
+            marginTop: 8,
+            width: "100%",
+            height: 44,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            fontSize: "0.65rem",
+            transform: hovered ? "translateY(0)" : "translateY(0)",
+          }}
+        >
+          <HiOutlineShoppingBag style={{ width: 14, height: 14 }} />
+          Add To Bag
+        </button>
+      </div>
+    </div>
   );
 };
-
-export async function getStaticProps() {
-  const products = await client.fetch(`*[_type == "product"]`);
-
-  const heroData = await client.fetch(`*[_type == "hero"]`);
-
-  return {
-    props: {
-      products,
-      heroData,
-    },
-  };
-}
 
 export default Everything;

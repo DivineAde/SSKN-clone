@@ -1,111 +1,109 @@
 import React, { useState } from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { urlFor } from "@/lib/client";
-import "@splidejs/splide/dist/css/splide.min.css";
 import { AiFillStar } from "react-icons/ai";
 import { BsStarHalf } from "react-icons/bs";
 import Link from "next/link";
 
 const TopRated = ({ product: { image, name, slug, price } }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const options = {
-    perPage: 3,
-    perMove: 1,
-    gap: "2rem",
-    rewind: true,
-    type: "loop",
-    pagination: false,
-    breakpoints: {
-      768: {
-        perPage: 2,
-        gap: "0.5rem",
-      },
-      500: {
-        perPage: 1,
-        gap: "0.5rem",
-      },
-    },
-  };
-
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
-
-  const handleMouseEnter = (index) => {
-    setCurrentIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setCurrentIndex(0);
-  };
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <>
-      <Link href={`/product/${slug.current}`}>
-        <div className="grid items-center gap-4 pb-2 rounded-lg shadow shadow-slate-50 ring-1 ring-slate-50">
-          <div className="flex flex-col">
-            <img
-              src={urlFor(image && image[currentIndex])}
-              alt="acid"
-              className="w-full h-full"
-              onMouseEnter={() => handleMouseEnter(1)}
-              onMouseLeave={handleMouseLeave}
-            />
-            <div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl uppercase">{name}</h1>
-                <p className="text-2xl font-medium">&#36;{price}</p>
-              </div>
-              <div className="flex">
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <BsStarHalf />
-              </div>
-            </div>
+    <Link href={`/product/${slug.current}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <div
+        className="product-card"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{ cursor: "pointer" }}
+      >
+        {/* ── Image wrapper ── */}
+        <div style={{ position: "relative", overflow: "hidden", aspectRatio: "3/4", background: "#f9f6f2" }}>
+          <img
+            src={urlFor(image && image[hovered ? 1 : 0])}
+            alt={name}
+            className="product-image"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+
+          {/* Hover CTA */}
+          <div
+            className="card-overlay-btn"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: "16px",
+            }}
+          >
             <button
               type="button"
-              className="py-2 border border-black mt-[8em] bg-white text-black hover:bg-black hover:text-white transition duration-300 ease-in-out"
+              style={{
+                width: "100%",
+                height: 44,
+                background: "rgba(255,255,255,0.95)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.8)",
+                color: "#0a0a0a",
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                fontFamily: "'Inter', sans-serif",
+                transition: "background 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#0a0a0a") || (e.currentTarget.style.color = "#fff")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.95)") || (e.currentTarget.style.color = "#0a0a0a")}
             >
-              SHOP NOW
+              Shop Now
             </button>
           </div>
         </div>
-      </Link>
-    </>
+
+        {/* ── Info ── */}
+        <div style={{ padding: "14px 16px 16px" }}>
+          {/* Stars */}
+          <div style={{ display: "flex", gap: 2, marginBottom: 8 }}>
+            {[...Array(4)].map((_, i) => (
+              <AiFillStar key={i} style={{ width: 12, height: 12, color: "#0a0a0a" }} />
+            ))}
+            <BsStarHalf style={{ width: 12, height: 12, color: "#0a0a0a" }} />
+            <span style={{ fontSize: "0.65rem", color: "#888", marginLeft: 4, letterSpacing: "0.04em" }}>
+              (4.5)
+            </span>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <h3
+              style={{
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "#0a0a0a",
+                lineHeight: 1.4,
+                flex: 1,
+                marginRight: 8,
+              }}
+            >
+              {name}
+            </h3>
+            <span
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "#0a0a0a",
+                letterSpacing: "-0.01em",
+                flexShrink: 0,
+              }}
+            >
+              ${price}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
-
-export async function getStaticProps() {
-  const products = await client.fetch(`*[_type == "product"]`);
-
-  const heroData = await client.fetch(`*[_type == "hero"]`);
-
-  return {
-    props: {
-      products,
-      heroData,
-    },
-  };
-}
 
 export default TopRated;

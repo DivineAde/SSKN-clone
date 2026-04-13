@@ -1,129 +1,350 @@
 import { useStateContext } from "@/context/StateContext";
 import { urlFor } from "@/lib/client";
 import { AiOutlineClose, AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { HiOutlineShoppingBag } from "react-icons/hi";
+import Link from "next/link";
 
 const Cart = () => {
   const {
-    qty,
     setShowCart,
     totalQuantities,
     cartItems,
-    decQty,
-    incQty,
     toggleCartItemQuantity,
     totalPrice,
     deleteCartItem,
   } = useStateContext();
+
   return (
-    <div className="effect w-full h-screen z-[9999]">
-      <div className="relative float-right w-full md:w-[600px] h-screen bg-white z-[50] px-4 py-[10px]">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl uppercase">
-            Your bag ({totalQuantities}){" "}
-            <span className="capitilize text-lg underline cursor-pointer">
-              View bag
-            </span>
-          </h1>
-          <AiOutlineClose
-            className="w-5 h-5 cursor-pointer"
+    <div className="effect" onClick={(e) => { if (e.target === e.currentTarget) setShowCart(false); }}>
+      <div className="cart-drawer">
+
+        {/* ── Header ── */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "24px 28px",
+            borderBottom: "1px solid #e8e4df",
+            flexShrink: 0,
+          }}
+        >
+          <div>
+            <h2
+              style={{
+                fontSize: "0.65rem",
+                fontWeight: 600,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "#888",
+                marginBottom: 4,
+              }}
+            >
+              Your Bag
+            </h2>
+            <p
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#0a0a0a",
+              }}
+            >
+              {totalQuantities} {totalQuantities === 1 ? "item" : "items"}
+            </p>
+          </div>
+          <button
             onClick={() => setShowCart(false)}
-          />
+            style={{
+              width: 36,
+              height: 36,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#f0ede8",
+              border: "none",
+              borderRadius: "50%",
+              cursor: "pointer",
+              transition: "background 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#e0ddd8")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#f0ede8")}
+            aria-label="Close cart"
+          >
+            <AiOutlineClose style={{ width: 16, height: 16 }} />
+          </button>
         </div>
 
+        {/* ── Empty state ── */}
         {cartItems.length < 1 && (
-          <div className="insert-center">
-            <h1 className="text-center">
-              Your bag is empty. Continue browsing, or start with our best
-              sellers below.
-            </h1>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "40px 28px",
+              gap: 20,
+            }}
+          >
+            <div
+              style={{
+                width: 72,
+                height: 72,
+                borderRadius: "50%",
+                background: "#f0ede8",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <HiOutlineShoppingBag style={{ width: 30, height: 30, color: "#888" }} />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <p style={{ fontSize: "0.95rem", fontWeight: 600, marginBottom: 8 }}>Your bag is empty</p>
+              <p style={{ fontSize: "0.8rem", color: "#888", lineHeight: 1.6 }}>
+                Continue browsing, or start with our best sellers below.
+              </p>
+            </div>
+            <button
+              className="btn-primary"
+              onClick={() => setShowCart(false)}
+              style={{ marginTop: 8 }}
+            >
+              Continue Shopping
+            </button>
           </div>
         )}
 
-        <div className="overflow-auto max-h-[70vh]">
-          {cartItems.length > 0 &&
-            cartItems.map((item) => (
-              <div className="mt-4 flex justify-between" key={item._id}>
-                <div className="flex gap-x-4">
-                  <div>
-                    <img
-                      src={urlFor(item?.image[0])}
-                      alt="product/img"
-                      className="max-h-32"
-                    />
-                  </div>
-                  <div>
-                    <p className="uppercase">{item.name}</p>
-                    <span className="text-[.8em]">Single</span>
-                    <form className="flex flex-col mt-2">
-                      <label className="flex items-center text-[.8em] mb-2">
-                        <input type="radio" name="radio" className="mr-[1em]" />
-                        One-time purchase
-                      </label>
-                      <label className="flex items-center text-[.8em]">
-                        <input type="radio" name="radio" className="mr-[1em]" />
-                        Subscribe & save 10%
-                      </label>
-                    </form>
+        {/* ── Cart Items ── */}
+        {cartItems.length > 0 && (
+          <div style={{ flex: 1, overflowY: "auto", padding: "0 28px" }}>
+            {cartItems.map((item, i) => (
+              <div
+                key={item._id}
+                style={{
+                  display: "flex",
+                  gap: 16,
+                  padding: "20px 0",
+                  borderBottom: "1px solid #e8e4df",
+                  animation: `slideUp 0.35s cubic-bezier(0.16,1,0.3,1) ${i * 0.05}s both`,
+                }}
+              >
+                {/* Product Image */}
+                <div
+                  style={{
+                    width: 88,
+                    height: 88,
+                    flexShrink: 0,
+                    background: "#f9f6f2",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={urlFor(item?.image[0])}
+                    alt={item.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
 
-                    <div className="flex flex-col mt-2">
-                      <span className="text-sm">QUANTITY</span>
-                      <div className="max-w-8">
-                        <button
-                          type="button"
-                          className="p-2 hover:bg-slate-200 hover:rounded-full"
-                          onClick={() => (item._id, "dec")}
-                        >
-                          <AiOutlineMinus />
-                        </button>
-                        <span className="p-2">{item.quantity}</span>
-                        <button
-                          type="button"
-                          className="p-2 hover:bg-slate-200 hover:rounded-full"
-                          onClick={() =>
-                            toggleCartItemQuantity(item._id, "inc")
-                          }
-                        >
-                          <AiOutlinePlus />
-                        </button>
-                        <button
-                          type="button"
-                          className="underline text-[.8em] ml-4"
-                          onClick={() => deleteCartItem(item)}
-                        >
-                          Remove
-                        </button>
-                      </div>
+                {/* Product Details */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                    <p
+                      style={{
+                        fontSize: "0.78rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#0a0a0a",
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {item.name}
+                    </p>
+                    <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0a0a0a", flexShrink: 0, marginLeft: 8 }}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </p>
+                  </div>
+
+                  <span
+                    style={{
+                      display: "inline-block",
+                      fontSize: "0.65rem",
+                      fontWeight: 500,
+                      letterSpacing: "0.08em",
+                      color: "#888",
+                      textTransform: "uppercase",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Single · ${item.price}
+                  </span>
+
+                  {/* Subscription options */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                      <input type="radio" name={`radio-${item._id}`} defaultChecked style={{ accentColor: "#0a0a0a" }} />
+                      <span style={{ fontSize: "0.7rem", color: "#555" }}>One-time purchase</span>
+                    </label>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                      <input type="radio" name={`radio-${item._id}`} style={{ accentColor: "#0a0a0a" }} />
+                      <span style={{ fontSize: "0.7rem", color: "#555" }}>Subscribe &amp; save 10%</span>
+                    </label>
+                  </div>
+
+                  {/* Quantity controls */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        border: "1px solid #e8e4df",
+                        height: 34,
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleCartItemQuantity(item._id, "dec")}
+                        style={{
+                          width: 34,
+                          height: 34,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "none",
+                          background: "none",
+                          cursor: "pointer",
+                          transition: "background 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "#f0ede8")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                      >
+                        <AiOutlineMinus style={{ width: 12, height: 12 }} />
+                      </button>
+                      <span
+                        style={{
+                          width: 32,
+                          textAlign: "center",
+                          fontSize: "0.8rem",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => toggleCartItemQuantity(item._id, "inc")}
+                        style={{
+                          width: 34,
+                          height: 34,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "none",
+                          background: "none",
+                          cursor: "pointer",
+                          transition: "background 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "#f0ede8")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                      >
+                        <AiOutlinePlus style={{ width: 12, height: 12 }} />
+                      </button>
                     </div>
-                  </div>
-                </div>
-
-                <div className="mr-4">
-                  <span className="font-bold">${item.price}</span>
-                </div>
-                <div className="absolute bottom-0 left-0 bg-slate-50 w-full py-5 px-4">
-                  <div className="flex justify-between">
-                    <h1>SUBTOTAL</h1>
-                    <span className="font-bold">${totalPrice}</span>
-                  </div>
-                  <div className="">
-                    <span className="float-right text-xs pb-1">
-                      Shipping, tax, and promo codes applied at checkout
-                    </span>
                     <button
                       type="button"
-                      className=" py-2 w-full border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out"
+                      onClick={() => deleteCartItem(item)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        fontSize: "0.65rem",
+                        fontWeight: 500,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#888",
+                        textDecoration: "underline",
+                        padding: "4px 8px",
+                      }}
                     >
-                      PROCEED TO CHECKOUT
+                      Remove
                     </button>
-                    <span className=" float-right text-xs pt-1">
-                      or 4 interest-free payments of $22.50 with stripe or
-                      payday
-                    </span>
                   </div>
                 </div>
               </div>
             ))}
-        </div>
+          </div>
+        )}
+
+        {/* ── Footer / Checkout ── */}
+        {cartItems.length > 0 && (
+          <div
+            style={{
+              flexShrink: 0,
+              borderTop: "1px solid #e8e4df",
+              padding: "20px 28px 28px",
+              background: "#fff",
+            }}
+          >
+            {/* Subtotal */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.65rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#888",
+                }}
+              >
+                Subtotal
+              </span>
+              <span style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+                ${totalPrice.toFixed(2)}
+              </span>
+            </div>
+
+            <p
+              style={{
+                fontSize: "0.65rem",
+                color: "#aaa",
+                letterSpacing: "0.04em",
+                marginBottom: 16,
+                textAlign: "center",
+              }}
+            >
+              Shipping, taxes & discounts calculated at checkout
+            </p>
+
+            <Link href="/checkout" onClick={() => setShowCart(false)}>
+              <button className="btn-primary" style={{ width: "100%", justifyContent: "center", height: 52, fontSize: "0.7rem" }}>
+                Proceed to Checkout
+              </button>
+            </Link>
+
+            <p
+              style={{
+                fontSize: "0.62rem",
+                color: "#aaa",
+                textAlign: "center",
+                marginTop: 10,
+                letterSpacing: "0.04em",
+              }}
+            >
+              or 4 interest-free payments of ${(totalPrice / 4).toFixed(2)} with{" "}
+              <strong style={{ color: "#555" }}>Klarna</strong>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

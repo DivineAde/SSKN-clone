@@ -1,41 +1,48 @@
-import React from 'react';
-import { client } from '@/lib/client';
-import Everything from '@/components/Everything';
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import { client } from "@/lib/client";
+import Everything from "@/components/Everything";
 
-
-const Skincare = ({ products, }) => {
+const Skincare = ({ products }) => {
   return (
-    <div className='mt-40 px-4'>
-      <h3>Home / Skincare</h3>
-      <h1 className='uppercase font-semibold text-3xl my-6'>Skincare</h1>
-      <p className='max-w-[375px] text-[0.9em]'>Meticulously crafted to support the skin's natural renewal abilities, SKKN BY KIM's visionary nine-product ritual delivers moisture, nourishment, and an indulgent at-home experience.</p>
-     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6'>
-      {products.map((product) => (
-        <Everything key={product._id} product={product} />
-      ))}
-     </div>
-    </div>
-    
-  )
-}
+    <>
+      <Head>
+        <title>Skincare – SKKN BY KIM</title>
+      </Head>
+      <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff", minHeight: "100vh" }}>
+        <div style={{ padding: "40px 40px 80px", maxWidth: 1440, margin: "0 auto" }}>
+          
+          <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 32 }}>
+            <Link href="/" style={{ opacity: 0.5, marginRight: 8, textDecoration: "none", color: "inherit" }}>Home</Link>
+            <span style={{ opacity: 0.5, marginRight: 8 }}>/</span>
+            Skincare
+          </h1>
+          
+          <div style={{ marginBottom: 48, maxWidth: 600 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.02em", marginBottom: 16 }}>
+              Skincare
+            </h2>
+            <p style={{ fontSize: "0.85rem", color: "#555", lineHeight: 1.7 }}>
+              Meticulously crafted to support the skin's natural renewal abilities, SKKN BY KIM's visionary nine-product ritual delivers moisture, nourishment, and an indulgent at-home experience.
+            </p>
+          </div>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "60px 32px" }}>
+            {products?.map((product) => (
+              <Everything key={product._id} product={product} />
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </>
+  );
+};
 
 export async function getStaticProps() {
   const products = await client.fetch(`*[_type == "product"]`);
-
-  const heroData = await client.fetch(`*[_type == "hero"]`);
-
-  const discoverData = await client.fetch(`*[_type == "rituals"]`);
-
-  const packData = await client.fetch(`*[_type == "pack"]`);
-
-  return {
-    props: {
-      products,
-      heroData,
-      discoverData,
-      packData,
-    },
-  };
+  return { props: { products } };
 }
 
-export default Skincare
+export default Skincare;

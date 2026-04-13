@@ -1,126 +1,287 @@
 import { useState } from "react";
+import Head from "next/head";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Hero } from "@/components/Hero";
-import Navbar from "@/components/Navbar";
 import TopRated from "@/components/TopRated";
 import { client } from "@/lib/client";
-import { Inter } from "next/font/google";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/splide/dist/css/splide.min.css";
-import { urlFor } from "@/lib/client";
-import { HiOutlineArrowNarrowRight } from "react-icons/hi";
-import { BsStarHalf } from "react-icons/bs";
 import Rituals from "@/components/Rituals";
 import Era from "@/components/Era";
 import Radiance from "@/components/Radiance";
 import Pack from "@/components/Pack";
 import FooterBanner from "@/components/FooterBanner";
 import Link from "next/link";
-import Layout from "@/components/Layout";
+import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
-const inter = Inter({ subsets: ["latin"] });
-//className={`${inter.className} mb-3 text-2xl font-semibold`}
+const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 1280 },
+    items: 3,
+    slidesToSlide: 1,
+  },
+  desktop: {
+    breakpoint: { max: 1280, min: 800 },
+    items: 2,
+  },
+  tablet: {
+    breakpoint: { max: 800, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 
 export default function Home({ products, heroData, discoverData, packData }) {
-  const [hovered, setHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
-
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 1024 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-    desktop: {
-      breakpoint: { max: 1024, min: 800 },
-      items: 2,
-    },
-    tablet: {
-      breakpoint: { max: 800, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+  const [shopAllHovered, setShopAllHovered] = useState(false);
 
   return (
     <>
-        <main className="">
-          <Hero heroData={heroData.length && heroData[0]} />
-          <div className="px-[25px] mt-10">
-            <div className="flex justify-between">
-              <h1 className=" text-xl md:text-3xl mb-2">TOP RATED</h1>
-              <Link href={"/collections/shop-all"}>
-                <button
-                  className={`flex justify-between items-center gap-3 text-lg md:text-3xl`}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <HiOutlineArrowNarrowRight
-                    className={`relative transition-transform duration-300 ${
-                      hovered ? "translate-x-3" : "translate-x-0"
-                    }`}
-                  />
-                  Shop all
-                </button>
-              </Link>
+      <Head>
+        <title>SKKN BY KIM — Clean Skincare Ritual</title>
+        <meta
+          name="description"
+          content="Discover SKKN BY KIM — science-backed, clean, vegan skincare developed by Kim Kardashian."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+
+      <main style={{ background: "#fff", overflowX: "hidden" }}>
+        {/* ══ HERO ══ */}
+        <Hero heroData={heroData.length && heroData[0]} />
+
+        {/* ══ TRUST BAR ══ */}
+        <div
+          style={{
+            background: "#f9f6f2",
+            borderTop: "1px solid #e8e4df",
+            borderBottom: "1px solid #e8e4df",
+            padding: "16px 40px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: 48,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              "Clean Formula",
+              "Cruelty-Free",
+              "Vegan",
+              "Gluten-Free",
+              "Sulfate-Free",
+              "Science-Backed",
+            ].map((label) => (
+              <span
+                key={label}
+                style={{
+                  fontSize: "0.6rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#555",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                ✦ {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ══ TOP RATED ══ */}
+        <section
+          style={{
+            padding: "80px 40px 40px",
+            maxWidth: 1440,
+            margin: "0 auto",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              marginBottom: 36,
+            }}
+          >
+            <div>
+              <span className="section-label">Best Sellers</span>
+              <h2
+                className="section-heading"
+                style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)", marginBottom: 0 }}
+              >
+                Top Rated
+              </h2>
             </div>
-            <Carousel itemClass="trial" draggable responsive={responsive}>
-              {products?.map((product) => (
-                <TopRated key={product._id} product={product} className="" />
+
+            <Link href="/collections/shop-all" style={{ textDecoration: "none" }}>
+              <button
+                className="btn-ghost"
+                onMouseEnter={() => setShopAllHovered(true)}
+                onMouseLeave={() => setShopAllHovered(false)}
+                style={{ display: "flex", alignItems: "center", gap: 8 }}
+              >
+                <span>Shop All</span>
+                <HiOutlineArrowNarrowRight
+                  style={{
+                    width: 18,
+                    height: 18,
+                    transform: shopAllHovered ? "translateX(5px)" : "translateX(0)",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
+              </button>
+            </Link>
+          </div>
+
+          <Carousel
+            itemClass="trial"
+            draggable
+            responsive={responsive}
+            containerClass="carousel-container"
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            dotListClass="carousel-dots"
+          >
+            {products?.map((product) => (
+              <TopRated key={product._id} product={product} />
+            ))}
+          </Carousel>
+        </section>
+
+        {/* ══ DISCOVER YOUR RITUALS ══ */}
+        <section
+          style={{
+            padding: "80px 40px",
+            maxWidth: 1440,
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 48,
+          }}
+          className="md:flex-row"
+        >
+          {/* Left: Image */}
+          <div
+            style={{
+              flex: "0 0 58%",
+              overflow: "hidden",
+              position: "relative",
+            }}
+            onMouseEnter={(e) => {
+              const img = e.currentTarget.querySelector("img");
+              if (img) img.style.transform = "scale(1.03)";
+            }}
+            onMouseLeave={(e) => {
+              const img = e.currentTarget.querySelector("img");
+              if (img) img.style.transform = "scale(1)";
+            }}
+          >
+            <img
+              src="/watch now.webp"
+              alt="Discover your rituals"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+                transition: "transform 0.7s cubic-bezier(0.16,1,0.3,1)",
+              }}
+            />
+          </div>
+
+          {/* Right: Ritual list */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <span className="section-label">Skincare Ritual</span>
+            <h2
+              className="section-heading"
+              style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", marginBottom: 8 }}
+            >
+              Discover Your<br />
+              <em>Ritual</em>
+            </h2>
+
+            <p
+              style={{
+                fontSize: "0.82rem",
+                color: "#888",
+                marginBottom: 24,
+                lineHeight: 1.6,
+              }}
+            >
+              Nine steps. Infinite transformation.
+            </p>
+
+            {/* Scrollable ritual list */}
+            <div
+              style={{
+                overflowY: "auto",
+                maxHeight: "42vh",
+                paddingRight: 8,
+                scrollbarWidth: "thin",
+              }}
+            >
+              {discoverData.map((item) => (
+                <Rituals key={item._id} item={item} />
               ))}
-            </Carousel>
-          </div>
-
-          {/* Discover your Rituals */}
-          <div className="px-[25px] w-full flex flex-col gap-x-8 lg:flex-row mt-24">
-            <div className="w-full lg:w-3/5">
-              <img src="/watch now.webp" alt="watch_now/img" />
             </div>
 
-            <div className="w-full lg:w-2/5">
-              <h1 className="text-2xl uppercase font-bold mt-4 md:mt-0">
-                Discover your rituals
-              </h1>
-              <div className="mt-8 overflow-auto lg:max-h-[40vh]">
-                {discoverData.map((item) => (
-                  <Rituals key={item._id} item={item} />
-                ))}
-              </div>
-              <Link href={"/collections/shop-all"}>
-                <button className="w-full py-4 border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out mt-[10%]">
-                  SHOP ALL
-                </button>
-              </Link>
-            </div>
+            <Link href="/collections/shop-all">
+              <button
+                className="btn-primary"
+                style={{ marginTop: 28, width: "100%", height: 52, justifyContent: "center", fontSize: "0.7rem" }}
+              >
+                Shop All Products
+              </button>
+            </Link>
           </div>
+        </section>
+
+        {/* ══ ERA ══ */}
+        <div style={{ borderTop: "1px solid #e8e4df" }}>
           <Era />
+        </div>
+
+        {/* ══ RADIANCE ══ */}
+        <div style={{ background: "#f9f6f2", borderTop: "1px solid #e8e4df" }}>
           <Radiance />
+        </div>
+
+        {/* ══ PACKS ══ */}
+        <div style={{ borderTop: "1px solid #e8e4df", paddingTop: 80 }}>
           <Pack packData={packData.length && packData[0]} />
+        </div>
+
+        {/* ══ FOOTER BANNER ══ */}
+        <div style={{ background: "#f9f6f2", borderTop: "1px solid #e8e4df" }}>
           <FooterBanner />
-        </main>
+        </div>
+      </main>
     </>
   );
 }
 
 export async function getStaticProps() {
   const products = await client.fetch(`*[_type == "product"]`);
-
   const heroData = await client.fetch(`*[_type == "hero"]`);
-
   const discoverData = await client.fetch(`*[_type == "rituals"]`);
-
   const packData = await client.fetch(`*[_type == "pack"]`);
 
   return {

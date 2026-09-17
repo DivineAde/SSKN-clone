@@ -52,7 +52,7 @@ export default function CheckoutPage() {
     reference: `SKKN_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
     email: form.email || "customer@example.com",
     amount: Math.round(orderTotal * 100), // amount in kobo
-    publicKey: process.env.PUBLIC_PAYSTACK_PUBLIC_KEY,
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     currency: "NGN",
     metadata: {
       custom_fields: [

@@ -36,6 +36,12 @@ export const StateContext = ({ children }) => {
     toast.success(`${qty} ${product.name} added to the cart`);
   } 
 
+  const clearCart = () => {
+    setCartItems([]);
+    setTotalPrice(0);
+    setTotalQuantities(0);
+  };
+
   const deleteCartItem = (product) => {
     const deletedItem = cartItems.find((item) => item._id === product._id);
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
@@ -110,7 +116,7 @@ export const StateContext = ({ children }) => {
 
   return (
     <Context.Provider
-      value={{ showCart, cartItems, totalPrice, totalQuantities, qty, incQty, decQty, onAdd, setShowCart, toggleCartItemQuantity, deleteCartItem, shopAllItems }}
+      value={{ showCart, cartItems, totalPrice, totalQuantities, qty, incQty, decQty, onAdd, setShowCart, toggleCartItemQuantity, deleteCartItem, clearCart, shopAllItems }}
     >
       {children}
     </Context.Provider>

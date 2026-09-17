@@ -8,7 +8,10 @@ const TopRated = ({ product: { image, name, slug, price } }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link href={`/product/${slug.current}`} style={{ textDecoration: "none", color: "inherit" }}>
+    <Link
+      href={`/product/${slug.current}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
       <div
         className="product-card"
         onMouseEnter={() => setHovered(true)}
@@ -16,12 +19,25 @@ const TopRated = ({ product: { image, name, slug, price } }) => {
         style={{ cursor: "pointer" }}
       >
         {/* ── Image wrapper ── */}
-        <div style={{ position: "relative", overflow: "hidden", aspectRatio: "3/4", background: "#f9f6f2" }}>
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            aspectRatio: "3/4",
+            background: "#f9f6f2",
+          }}
+        >
           <img
             src={urlFor(image && image[hovered ? 1 : 0])}
             alt={name}
             className="product-image"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
           />
 
           {/* Hover CTA */}
@@ -50,10 +66,16 @@ const TopRated = ({ product: { image, name, slug, price } }) => {
                 textTransform: "uppercase",
                 cursor: "pointer",
                 fontFamily: "'Inter', sans-serif",
-                transition: "background 0.2s ease",
+                transition: "background 0.2s ease, color 0.2s ease", // Added color transition for smoothness
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#0a0a0a") || (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.95)") || (e.currentTarget.style.color = "#0a0a0a")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#0a0a0a";
+                e.currentTarget.style.color = "#ffffff"; // Changes text to white on hover
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.95)";
+                e.currentTarget.style.color = "#0a0a0a"; // Resets text to dark on leave
+              }}
             >
               Shop Now
             </button>
@@ -65,15 +87,31 @@ const TopRated = ({ product: { image, name, slug, price } }) => {
           {/* Stars */}
           <div style={{ display: "flex", gap: 2, marginBottom: 8 }}>
             {[...Array(4)].map((_, i) => (
-              <AiFillStar key={i} style={{ width: 12, height: 12, color: "#0a0a0a" }} />
+              <AiFillStar
+                key={i}
+                style={{ width: 12, height: 12, color: "#0a0a0a" }}
+              />
             ))}
             <BsStarHalf style={{ width: 12, height: 12, color: "#0a0a0a" }} />
-            <span style={{ fontSize: "0.65rem", color: "#888", marginLeft: 4, letterSpacing: "0.04em" }}>
+            <span
+              style={{
+                fontSize: "0.65rem",
+                color: "#888",
+                marginLeft: 4,
+                letterSpacing: "0.04em",
+              }}
+            >
               (4.5)
             </span>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
             <h3
               style={{
                 fontSize: "0.72rem",
@@ -97,7 +135,7 @@ const TopRated = ({ product: { image, name, slug, price } }) => {
                 flexShrink: 0,
               }}
             >
-              ${price}
+              {`₦${price.toFixed(2)}`}
             </span>
           </div>
         </div>

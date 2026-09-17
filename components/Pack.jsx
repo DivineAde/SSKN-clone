@@ -19,7 +19,7 @@ const Pack = ({ packData }) => {
   };
 
   return (
-    <section style={{ maxWidth: 1440, margin: "0 auto", padding: "0 40px 80px" }}>
+    <section style={{ maxWidth: 1280, margin: "0 auto", padding: "0 40px 80px" }}>
       {/* Header row */}
       <div
         style={{

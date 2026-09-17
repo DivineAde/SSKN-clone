@@ -43,7 +43,7 @@ const TopRatedProduct = ({ product, discoverData }) => {
 
       <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff" }}>
         {/* ── BREADCRUMBS ── */}
-        <div style={{ padding: "32px 40px", maxWidth: 1440, margin: "0 auto" }}>
+        <div style={{ padding: "32px 40px", maxWidth: 1280, margin: "0 auto" }}>
           <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a" }}>
             <Link href="/" style={{ opacity: 0.5, cursor: "pointer", marginRight: 8, textDecoration: "none", color: "inherit" }}>
               Home
@@ -59,7 +59,7 @@ const TopRatedProduct = ({ product, discoverData }) => {
             display: "grid",
             gridTemplateColumns: "1fr 480px",
             gap: 48,
-            maxWidth: 1440,
+            maxWidth: 1280,
             margin: "0 auto",
             padding: "0 40px 80px",
           }}
@@ -125,7 +125,7 @@ const TopRatedProduct = ({ product, discoverData }) => {
               {name}
             </h1>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
-              <p style={{ fontSize: "1.2rem", fontWeight: 700 }}>${price}</p>
+              <p style={{ fontSize: "1.2rem", fontWeight: 700 }}>{`₦${price.toFixed(2)}`}</p>
               <p style={{ fontSize: "0.8rem", color: "#888" }}>{size}</p>
             </div>
 
@@ -167,11 +167,11 @@ const TopRatedProduct = ({ product, discoverData }) => {
             <div style={{ padding: 16, border: "1px solid #e8e4df", marginBottom: 32, background: "#f9f6f2" }}>
               <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", marginBottom: 12 }}>
                 <input type="radio" name="subs" defaultChecked style={{ width: 16, height: 16, accentColor: "#0a0a0a" }} />
-                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>One-time purchase (${price})</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>One-time purchase ({`₦${price.toFixed(2)}`})</span>
               </label>
               <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
                 <input type="radio" name="subs" style={{ width: 16, height: 16, accentColor: "#0a0a0a" }} />
-                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>Subscribe &amp; Save 10% (${(price * 0.9).toFixed(2)})</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>Subscribe &amp; Save 10% ({`₦${(price * 0.9).toFixed(2)}`})</span>
               </label>
             </div>
 
@@ -204,12 +204,12 @@ const TopRatedProduct = ({ product, discoverData }) => {
                 onClick={() => onAdd(product, qty)}
                 style={{ flex: 1, height: 52, fontSize: "0.75rem" }}
               >
-                Add To Bag — ${(price * qty).toFixed(2)}
+                Add To Bag — {`₦${(price * qty).toFixed(2)}`}
               </button>
             </div>
 
             <p style={{ fontSize: "0.65rem", color: "#888", textAlign: "center", letterSpacing: "0.02em", marginBottom: 40 }}>
-              Or 4 interest-free payments of ${(price / 4).toFixed(2)} with <strong>Klarna</strong>
+              Or 4 interest-free payments of {`₦${(price / 4).toFixed(2)}`} with <strong>Klarna</strong>
             </p>
 
             {/* Accordions */}
@@ -259,7 +259,7 @@ const TopRatedProduct = ({ product, discoverData }) => {
         </main>
 
         {/* ── RELATED RITUALS ── */}
-        <section style={{ borderTop: "1px solid #e8e4df", padding: "80px 40px", maxWidth: 1440, margin: "0 auto", display: "flex", gap: 48 }} className="flex-col lg:flex-row">
+        <section style={{ borderTop: "1px solid #e8e4df", padding: "80px 40px", maxWidth: 1280, margin: "0 auto", display: "flex", gap: 48 }} className="flex-col lg:flex-row">
           <div style={{ flex: "0 0 55%", background: "#f9f6f2", overflow: "hidden" }}>
             <img src="/watch now.webp" alt="Rituals" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>

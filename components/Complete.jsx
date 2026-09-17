@@ -123,11 +123,11 @@ const AllSet = ({ products, heroData, discoverData, packData, setData }) => {
                     className="py-2 w-full border border-black bg-black text-white hover:bg-white hover:text-black transition duration-300 ease-in-out"
                     onClick={() => onAdd(setData, qty)}
                   >
-                    ADD TO BAG - {`${price}`}
+                    ADD TO BAG - {`₦${price.toFixed(2)}`}
                   </button>
                 </div>
                 <p className="text-sm pt-2">
-                  or 4 interest-free payments of $18.75 with{" "}
+                  or 4 interest-free payments of ₦18.75 with{" "}
                   <span className="font-bold text-lg">afterpay</span>
                 </p>
                 <p className="text-sm pt-4">

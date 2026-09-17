@@ -84,7 +84,7 @@ const Everything = ({ product }) => {
             </h3>
           </Link>
           <span style={{ fontSize: "0.85rem", fontWeight: 700, flexShrink: 0 }}>
-            ${price}
+            {`₦${price.toFixed(2)}`}
           </span>
         </div>
 

@@ -68,7 +68,7 @@ const Rituals = ({ item: { name, image, discount, details, price } }) => {
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             {discount && (
               <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0a0a0a" }}>
-                ${discount}
+                ₦{discount}
               </span>
             )}
             <span
@@ -79,7 +79,7 @@ const Rituals = ({ item: { name, image, discount, details, price } }) => {
                 textDecoration: discount ? "line-through" : "none",
               }}
             >
-              ${price}
+              ₦{price.toFixed(2)}
             </span>
             {discount && (
               <span

@@ -322,7 +322,7 @@ export default function CheckoutPage() {
                               </button>
                             </div>
                             <span style={{ fontSize: "0.7rem", color: "#888", display: "block", marginBottom: 12 }}>
-                              ${item.price} · Single
+                              ₦{item.price.toFixed(2)} · Single
                             </span>
 
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -353,7 +353,7 @@ export default function CheckoutPage() {
                                 </button>
                               </div>
                               <span style={{ fontSize: "0.9rem", fontWeight: 700 }}>
-                                ${(item.price * item.quantity).toFixed(2)}
+                                {`₦${(item.price * item.quantity).toFixed(2)}`}
                               </span>
                             </div>
                           </div>
@@ -839,7 +839,7 @@ export default function CheckoutPage() {
                     onClick={handlePlaceOrder}
                     style={{ flex: 2, height: 54, justifyContent: "center", fontSize: "0.7rem" }}
                   >
-                    Place Order · ${orderTotal}
+                    Place Order · {`₦${orderTotal.toFixed(2)}`}
                   </button>
                 </div>
               </div>
@@ -937,7 +937,7 @@ export default function CheckoutPage() {
                     <span style={{ fontSize: "0.65rem", color: "#888" }}>Single</span>
                   </div>
                   <span style={{ fontSize: "0.82rem", fontWeight: 700, flexShrink: 0 }}>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    {`₦${(item.price * item.quantity).toFixed(2)}`}
                   </span>
                 </div>
               ))}
@@ -962,17 +962,17 @@ export default function CheckoutPage() {
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="order-summary-line">
                 <span style={{ color: "#666" }}>Subtotal ({totalQuantities} items)</span>
-                <span style={{ fontWeight: 600 }}>${totalPrice.toFixed(2)}</span>
+                <span style={{ fontWeight: 600 }}>{`₦${totalPrice.toFixed(2)}`}</span>
               </div>
               <div className="order-summary-line">
                 <span style={{ color: "#666" }}>Shipping</span>
                 <span style={{ fontWeight: 600, color: shipping === 0 ? "#22a06b" : "#0a0a0a" }}>
-                  {shipping === 0 ? "FREE" : `$${shipping}`}
+                  {shipping === 0 ? "FREE" : `₦${shipping.toFixed(2)}`}
                 </span>
               </div>
               <div className="order-summary-line">
                 <span style={{ color: "#666" }}>Estimated Tax</span>
-                <span style={{ fontWeight: 600 }}>${tax}</span>
+                <span style={{ fontWeight: 600 }}>{`₦${tax.toFixed(2)}`}</span>
               </div>
               <div
                 style={{
@@ -994,7 +994,7 @@ export default function CheckoutPage() {
                   Total
                 </span>
                 <span style={{ fontSize: "1.2rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-                  ${orderTotal}
+                  {`₦${orderTotal.toFixed(2)}`}
                 </span>
               </div>
             </div>
@@ -1012,7 +1012,7 @@ export default function CheckoutPage() {
                   lineHeight: 1.5,
                 }}
               >
-                Add ${(75 - totalPrice).toFixed(2)} more to qualify for <strong>free shipping</strong>
+                Add {`₦${(75 - totalPrice).toFixed(2)}`} more to qualify for <strong>free shipping</strong>
               </div>
             )}
 

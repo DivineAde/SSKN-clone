@@ -18,7 +18,7 @@ const Subscription = () => {
       <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff", minHeight: "100vh" }}>
         
         {/* ── BREADCRUMBS ── */}
-        <div style={{ padding: "40px 40px 0", maxWidth: 1440, margin: "0 auto" }}>
+        <div style={{ padding: "40px 40px 0", maxWidth: 1280, margin: "0 auto" }}>
           <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 32 }}>
             <Link href="/" style={{ opacity: 0.5, marginRight: 8, textDecoration: "none", color: "inherit" }}>Home</Link>
             <span style={{ opacity: 0.5, marginRight: 8 }}>/</span>
@@ -42,7 +42,7 @@ const Subscription = () => {
         </div>
 
         {/* ── INTRO ── */}
-        <div style={{ maxWidth: 1440, margin: "0 auto", padding: "80px 40px", display: "flex", gap: 48 }} className="flex-col md:flex-row">
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 40px", display: "flex", gap: 48 }} className="flex-col md:flex-row">
           <h2 style={{ flex: 1, fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1.2 }}>
             Never Run Out<br />
             <em>Of Your Routine.</em>
@@ -56,7 +56,7 @@ const Subscription = () => {
 
         {/* ── BENEFITS & HOW IT WORKS ── */}
         <div style={{ background: "#f9f6f2", padding: "80px 40px" }}>
-          <div style={{ maxWidth: 1440, margin: "0 auto" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             
             {/* Benefits */}
             <div style={{ marginBottom: 80 }}>
@@ -124,7 +124,7 @@ const Subscription = () => {
         </div>
 
         {/* ── FAQ & BOTTOM IMAGE ── */}
-        <div style={{ maxWidth: 1440, margin: "0 auto", padding: "80px 40px 120px", display: "grid", gap: 64, gridTemplateColumns: "1fr 1fr" }} className="md:grid-cols-2 grid-cols-1">
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 40px 120px", display: "grid", gap: 64, gridTemplateColumns: "1fr 1fr" }} className="md:grid-cols-2 grid-cols-1">
           <div>
             <span className="section-label">Support</span>
             <h2 className="section-heading" style={{ marginBottom: 32 }}>FAQ</h2>

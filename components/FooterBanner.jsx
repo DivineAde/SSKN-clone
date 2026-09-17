@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const FooterBanner = () => {
   return (
-    <section style={{ padding: "80px 40px", maxWidth: 1440, margin: "0 auto" }}>
+    <section style={{ padding: "80px 40px", maxWidth: 1280, margin: "0 auto" }}>
       <div
         style={{
           display: "grid",

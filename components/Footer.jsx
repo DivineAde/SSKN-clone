@@ -155,7 +155,7 @@ const Footer = () => {
       </div>
 
       {/* ── Main footer columns ── */}
-      <div style={{ padding: "64px 40px 40px", maxWidth: 1440, margin: "0 auto" }}>
+      <div style={{ padding: "64px 40px 40px", maxWidth: 1280, margin: "0 auto" }}>
         <div
           style={{
             display: "grid",
@@ -275,7 +275,7 @@ const Footer = () => {
           gap: 12,
           alignItems: "center",
           justifyContent: "space-between",
-          maxWidth: 1440,
+          maxWidth: 1280,
           margin: "0 auto",
         }}
         className="md:flex-row"

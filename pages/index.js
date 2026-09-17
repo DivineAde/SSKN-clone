@@ -103,7 +103,7 @@ export default function Home({ products, heroData, discoverData, packData }) {
         <section
           style={{
             padding: "80px 40px 40px",
-            maxWidth: 1440,
+            maxWidth: 1280,
             margin: "0 auto",
           }}
         >
@@ -163,7 +163,7 @@ export default function Home({ products, heroData, discoverData, packData }) {
         <section
           style={{
             padding: "80px 40px",
-            maxWidth: 1440,
+            maxWidth: 1280,
             margin: "0 auto",
             display: "flex",
             flexDirection: "column",

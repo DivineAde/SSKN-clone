@@ -8,7 +8,7 @@ const Radiance = () => {
         flexDirection: "column",
         gap: "48px",
         padding: "96px 40px",
-        maxWidth: 1440,
+        maxWidth: 1280,
         margin: "0 auto",
       }}
       className="md:flex-row-reverse"

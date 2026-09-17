@@ -164,7 +164,7 @@ const Cart = () => {
                       {item.name}
                     </p>
                     <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0a0a0a", flexShrink: 0, marginLeft: 8 }}>
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₦{(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
 
@@ -179,7 +179,7 @@ const Cart = () => {
                       marginBottom: 10,
                     }}
                   >
-                    Single · ${item.price}
+                    Single · ₦{item.price.toFixed(2)}
                   </span>
 
                   {/* Subscription options */}
@@ -309,7 +309,7 @@ const Cart = () => {
                 Subtotal
               </span>
               <span style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
-                ${totalPrice.toFixed(2)}
+                ₦{totalPrice.toFixed(2)}
               </span>
             </div>
 
@@ -340,7 +340,7 @@ const Cart = () => {
                 letterSpacing: "0.04em",
               }}
             >
-              or 4 interest-free payments of ${(totalPrice / 4).toFixed(2)} with{" "}
+              or 4 interest-free payments of ₦{(totalPrice / 4).toFixed(2)} with{" "}
               <strong style={{ color: "#555" }}>Klarna</strong>
             </p>
           </div>

@@ -10,7 +10,7 @@ const Era = () => {
         flexDirection: "column",
         gap: 48,
         padding: "96px 40px",
-        maxWidth: 1440,
+        maxWidth: 1280,
         margin: "0 auto",
       }}
       className="md:flex-row"
@@ -21,6 +21,7 @@ const Era = () => {
           flex: 1,
           overflow: "hidden",
           position: "relative",
+          minHeight: 500, // Added a minimum height so the container has space for the absolute image
         }}
         onMouseEnter={(e) => {
           const img = e.currentTarget.querySelector("img");
@@ -32,15 +33,12 @@ const Era = () => {
         }}
       >
         <Image
-          src="/era.webp"
-          width={1000}
-          height={1000}
+          src="/the-good-hygiene-co-piePSrPkXoQ-unsplash.jpg"
+          fill // Tells Next.js to expand to the boundaries of the parent element
           alt="A New Era of Skincare"
+          sizes="(max-width: 768px) 100vw, 50vw" // Helps Next.js optimize image loading sizes
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
+            objectFit: "cover", // Crops the image perfectly instead of stretching it
             transition: "transform 0.7s cubic-bezier(0.16,1,0.3,1)",
           }}
         />
@@ -57,15 +55,10 @@ const Era = () => {
         className="md:pl-16"
       >
         <span className="section-label">Our Story</span>
-
-        <h2
-          className="section-heading"
-          style={{ marginBottom: 24 }}
-        >
+        <h2 className="section-heading" style={{ marginBottom: 24 }}>
           A New Era<br />
           <em>of Skincare.</em>
         </h2>
-
         <p
           style={{
             fontSize: "0.88rem",
@@ -75,10 +68,7 @@ const Era = () => {
             maxWidth: 440,
           }}
         >
-          Introducing an innovative line of uncompromising skincare developed
-          by Kim Kardashian. Through a visionary nine-product ritual, SKKN BY
-          KIM delivers nourishment, renewal, and an indulgent at-home
-          experience.
+          Introducing an innovative line of uncompromising skincare developed by Kim Kardashian. Through a visionary nine-product ritual, SKKN BY KIM delivers nourishment, renewal, and an indulgent at-home experience.
         </p>
 
         {/* Stats row */}

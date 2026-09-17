@@ -11,7 +11,7 @@ const Bundles = ({ products }) => {
         <title>Bundles – SKKN BY KIM</title>
       </Head>
       <div style={{ paddingTop: "var(--nav-h, 80px)", background: "#fff", minHeight: "100vh" }}>
-        <div style={{ padding: "40px 40px 80px", maxWidth: 1440, margin: "0 auto" }}>
+        <div style={{ padding: "40px 40px 80px", maxWidth: 1280, margin: "0 auto" }}>
           
           <h1 style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 32 }}>
             <Link href="/" style={{ opacity: 0.5, marginRight: 8, textDecoration: "none", color: "inherit" }}>Home</Link>

@@ -51,7 +51,7 @@ const Navbar = ({ products }) => {
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+      <nav className={`navbar  ${scrolled ? "scrolled" : ""}`} style={{ fontFamily: "'Inter', sans-serif" }}>
         {/* ── Announcement Bar ── */}
         <div
           style={{
@@ -65,7 +65,7 @@ const Navbar = ({ products }) => {
             textTransform: "uppercase",
           }}
         >
-          Complimentary shipping on orders over $75 · Clean. Vegan. Science-backed.
+          Complimentary shipping on orders over ₦7500 · Clean. Vegan. Science-backed.
         </div>
 
         {/* ── Main Nav Row ── */}
@@ -74,7 +74,7 @@ const Navbar = ({ products }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 24px",
+            padding: "0 34px",
             height: "64px",
           }}
         >
